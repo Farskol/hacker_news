@@ -1,6 +1,6 @@
 import React from "react";
 import {observer} from "mobx-react-lite";
-import {Grid, Container, LinearProgress} from "@mui/material";
+import {Grid, Container, LinearProgress, Button} from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 
 import PieceOfNews from "./PieceOfNews";
@@ -16,11 +16,14 @@ const News = observer(() => {
         }
     })
 
+
+
     let numberOfNews = ((obs.page-1)*100)+1;
 
     return (
         <Container sx = {{mt:'1rem'}}>
             {obs.newsOnPage.length === 0 && <LinearProgress sx = {{mt:'10rem', mb:'3rem'}}/>}
+            {obs.newsOnPage.length !==0 && <Button variant="text" onClick={()=>obs.updateNews()}>Update news</Button>}
             <Grid container spacing={1}>
                 {obs.newsOnPage.length !== 0 && obs.newsOnPage.map((news) => (
                     <PieceOfNews
@@ -30,8 +33,9 @@ const News = observer(() => {
                     />
                 ))}
             </Grid>
-            {<Pagination
+            {obs.newsOnPage.length !== 0 && <Pagination
                 count={5}
+                page={obs.page}
                 color="primary"
                 onChange={(event, page) => obs.changePage(page)}
                 sx = {{mt:'2rem'}}

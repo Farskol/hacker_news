@@ -1,5 +1,5 @@
 import {makeAutoObservable, runInAction} from "mobx";
-import {getItem} from "./Axios";
+import {getItem,topStories} from "./Axios";
 
 class Observer {
 
@@ -23,6 +23,13 @@ class Observer {
                     this.newsOnPage = value;
                 })
             })
+    }
+
+    async updateNews(){
+        topStories().then((data) => {
+            this.news = data.sort((a, b) => b - a)
+            this.changePage(this.page);
+        })
     }
 
 }
